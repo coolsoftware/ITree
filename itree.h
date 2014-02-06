@@ -84,14 +84,14 @@ public:
 		}
 
 	private:
-		node*                   cur_node;
-		int                     index;
-		std::vector<invl_type*> *p_al, *p_dh;
-		range_type              value;
+		node*							cur_node;
+		int					            index;
+		const std::vector<invl_type*>	*p_al, *p_dh;
+		range_type						value;
 
 		query_iterator(node* cur_node, int index, range_type value,
-			std::vector<invl_type*> *p_al, 
-			std::vector<invl_type*> *p_dh) 
+			const std::vector<invl_type*> *p_al, 
+			const std::vector<invl_type*> *p_dh) 
 			: cur_node(cur_node), index(index), value(value), 
 			p_al(p_al), p_dh(p_dh) {} // private constructor
 
@@ -202,7 +202,7 @@ public:
 
 	// build the interval tree structure and
 	// put the container into query mode
-	itree const& construct(void) 
+	itree const * construct(void) 
 	{
 		range_vec         values;
 		int               num_al_dh = 0;
@@ -218,7 +218,7 @@ public:
 
 		root = construct_tree(temp_invls, 0, temp_invls.size(), values, num_al_dh, 0, values.size() - 1);
 
-		return *this;
+		return this;
 	}
 
 	void extract_values(range_vec& values)
@@ -342,14 +342,14 @@ public:
 		return p1->high() > p2->high();
 	}
 
-	query_iterator qbegin(range_type x) 
+	query_iterator qbegin(range_type x) const
 	{ 
 		assert(constructed());
 		query_iterator it(root, 0, x, &al, &dh); 
 		it.init_node(); return it; 
 	}
 
-	query_iterator qend(range_type x) 
+	query_iterator qend(range_type x) const
 	{ 
 		assert(constructed());
 		query_iterator it(NULL, 0, x, NULL, NULL); 

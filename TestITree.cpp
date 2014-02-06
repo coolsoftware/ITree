@@ -64,7 +64,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	clock_t cbegin = clock();
 
 	// Put the tree in query mode
-	itree<observation> const &ConstTree = Tree.construct();
+	itree<observation> const * ConstTree = Tree.construct();
 
 	clock_t cend = clock();
 
@@ -85,7 +85,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		observation::range_type queryValue = query_vec[i];
 		//std::cout << "Query value: " << queryValue << std::endl;
 
-		for (itree<observation>::const_iterator citer = ConstTree.begin(); citer != ConstTree.end(); ++citer)
+		for (itree<observation>::const_iterator citer = ConstTree->begin(); citer != ConstTree->end(); ++citer)
 		{
 			if ((citer->low() <= queryValue) && 
 				(citer->high() >= queryValue))
@@ -117,7 +117,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		//std::cout << "Query value: " << queryValue << std::endl;
 
 		//itree<observation>::query_iterator iter;
-		for (itree<observation>::query_iterator iter = Tree.qbegin(queryValue); iter != Tree.qend(queryValue); ++iter)
+		for (itree<observation>::query_iterator iter = ConstTree->qbegin(queryValue); iter != ConstTree->qend(queryValue); ++iter)
 		{
 			if (bCheckResults) qresults.insert(iter->id());
 			qn++;
